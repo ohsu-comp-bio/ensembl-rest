@@ -1,0 +1,30 @@
+FROM ubuntu
+ADD deploy/ ./deploy
+ADD settings/ ./settings
+
+
+ENV ENSEMBL_API_VERSION ${ENSEMBL_API_VERSION:-92} 
+
+# Set TEST_ENV to nothing to stop deploying a MariaDB along with your server
+ENV TEST_ENV true
+  # config.vm.network :forwarded_port, guest: 3000, host: 3000
+  # config.vm.network :forwarded_port, guest: 5000, host: 5000
+  # config.vm.synced_folder "rest-src/", "/home/vagrant/src", :create => true
+RUN  deploy/deploy.sh ${ENSEMBL_API_VERSION} ${TEST_ENV}
+RUN  deploy/deploy-cpan.sh ${ENSEMBL_API_VERSION} ${TEST_ENV}
+# RUN  deploy/setup.sh 
+
+
+# ENV PERL5LIB=/root/src/ensembl-vep/modules:/root/src/ensembl-io/modules:/root/src/ensembl-funcgen/modules:/root/src/ensembl-variation/modules:/root/src/ensembl-compara/modules:/root/src/ensembl/modules:/root/src/bioperl-1.6.9:/root/src/ensembl-rest/ensembl-funcgen/modules:/root/src/ensembl-rest/ensembl-variation/modules:/root/src/ensembl-rest/ensembl-compara/modules:/root/src/ensembl-rest/ensembl/modules:/root/src/ensembl-rest/bioperl-1.6.9::/root/src/tabix-master/perl/blib/lib:/root/src/tabix-master/perl/blib/arch
+
+
+# ENV TABIX_HOME=/root/src/tabix-master
+# ENV PERL5LIB=${PERL5LIB}:${TABIX_HOME}/perl/blib/lib:${TABIX_HOME}/perl/blib/arch
+
+# # Setup LD_LIBRARY_PATH
+# ENV LD_LIBRARY_PATH=${TABIX_HOME}
+
+# WORKDIR /root/src/ensembl-rest
+# ADD ensembl-rest.conf /root/src/ensembl-rest/ensembl-rest.conf
+# CMD ./script/ensembl_rest_server.pl
+

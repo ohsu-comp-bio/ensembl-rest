@@ -1,0 +1,26 @@
+FROM ensembl-base
+
+ENV ENSEMBL_API_VERSION ${ENSEMBL_API_VERSION:-92} 
+
+# Set TEST_ENV to nothing to stop deploying a MariaDB along with your server
+ENV TEST_ENV true
+RUN  deploy/setup.sh 
+
+
+ENV PERL5LIB=/root/src/ensembl-vep/modules:/root/src/ensembl-io/modules:/root/src/ensembl-funcgen/modules:/root/src/ensembl-variation/modules:/root/src/ensembl-compara/modules:/root/src/ensembl/modules:/root/src/bioperl-1.6.9:/root/src/ensembl-rest/ensembl-funcgen/modules:/root/src/ensembl-rest/ensembl-variation/modules:/root/src/ensembl-rest/ensembl-compara/modules:/root/src/ensembl-rest/ensembl/modules:/root/src/ensembl-rest/bioperl-1.6.9::/root/src/tabix-master/perl/blib/lib:/root/src/tabix-master/perl/blib/arch
+
+
+ENV TABIX_HOME=/root/src/tabix-master
+ENV PERL5LIB=${PERL5LIB}:${TABIX_HOME}/perl/blib/lib:${TABIX_HOME}/perl/blib/arch
+
+# Setup LD_LIBRARY_PATH
+ENV LD_LIBRARY_PATH=${TABIX_HOME}
+
+WORKDIR /root/src/ensembl-rest
+RUN ls -l *.conf
+RUN rm /root/src/ensembl-rest/ensembl_rest.conf
+ADD ensembl_rest.conf /root/src/ensembl-rest/ensembl_rest.conf
+RUN ls -l *.conf
+# CMD ./script/ensembl_rest_server.pl
+CMD PERL5LIB=$PWD/lib:$PERL5LIB starman --listen :3000 --workers 10 ensembl_rest.psgi
+
