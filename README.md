@@ -18,5 +18,15 @@ https://github.com/Ensembl/ensembl-rest/wiki/REST-Installation-and-Development
 ### api
 https://rest.ensembl.org/documentation/info/lookup
 https://rest.ensembl.org/documentation/info/vep_hgvs_get
+### known issues
+* Due to slow build times, docker build broken into two steps: ensembl-base contains perl and data , ensemble-rest configures endpoint
+* The first request to each endpoint is slow due to startup 
+* Local mysql data has not been setup 
+  * https://github.com/Ensembl/ensembl-rest/wiki/REST-Installation-and-Development#speeding-up-id-lookup
+  * https://uswest.ensembl.org/info/docs/webcode/mirror/install/ensembl-data.html
+    * ftp://ftp.ensembl.org/pub/grch37/release-92/mysql/
+  * If environmental var DEPLOY_MYSQL is set, mysql will be installed in ensembl-base.  Optionally, you can set  MYSQL_PASSWORD, MYSQL_USER
+#### next steps
+* define volumes to persist ensembl data outside the container.  (externalize /root/.vep and persist data to object store)
 
 
