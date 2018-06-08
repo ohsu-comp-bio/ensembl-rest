@@ -1,0 +1,15 @@
+FROM ubuntu
+
+
+ADD deploy/ ./deploy
+ADD settings/ ./settings
+
+
+ENV ENSEMBL_API_VERSION ${ENSEMBL_API_VERSION:-92} 
+
+# deploy several packages, perl and optionally mysql
+# Set TEST_ENV to nothing to stop deploying a MariaDB along with your server
+RUN  deploy/deploy.sh ${ENSEMBL_API_VERSION} ${DEPLOY_MYSQL}
+
+# deploy all dependencies, download GRCh37 data for vep and lookup into /root/.vep
+RUN  deploy/deploy-cpan.sh ${ENSEMBL_API_VERSION} ${DEPLOY_MYSQL}
