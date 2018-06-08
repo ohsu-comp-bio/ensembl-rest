@@ -21,7 +21,7 @@ https://rest.ensembl.org/documentation/info/vep_hgvs_get
 ### known issues
 * Due to slow build times, docker build broken into two steps: ensembl-base contains perl and data , ensemble-rest configures endpoint
 * The first request to each endpoint is slow due to startup 
-* Local mysql data has not been setup 
+* Local mysql data has not been setup, the /lookup service uses external db at anonymous@ensembldb.ensembl.org:3337 
   * https://github.com/Ensembl/ensembl-rest/wiki/REST-Installation-and-Development#speeding-up-id-lookup
   * https://uswest.ensembl.org/info/docs/webcode/mirror/install/ensembl-data.html
     * ftp://ftp.ensembl.org/pub/grch37/release-92/mysql/
