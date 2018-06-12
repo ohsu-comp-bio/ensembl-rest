@@ -34,7 +34,6 @@ apt-get install -y build-essential
 apt-get install -y libtest-differences-perl libtest-json-perl libtest-xml-simple-perl
 apt-get install -y wget
 apt-get install -y libz-dev
-apt-get install -y bgzip2
 # Clean up
 apt-get clean
 
