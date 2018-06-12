@@ -6,8 +6,10 @@ docker
 ## setup perl environment, ubuntu packages, etc.
 docker build -t ensembl-base -f Dockerfile-base . 
 ## data setup
+```
 mkdir ./data
 docker run -v $(pwd)/data:/root/.vep   --rm -it ensembl-base bash /deploy/data.sh
+```
 ( now the $(pwd)/data persists across instances.  It can be backed-up / restored from an object store ) 
 ## configure it
 docker build -t ensembl-rest -f Dockerfile-rest  . 
